@@ -11,7 +11,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   if (!user) return next(new AppError('User already exist', 401))
 
-  res.status(401).json({
+  res.status(201).json({
     status: 'success',
     data: { user },
   });
@@ -34,7 +34,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  res.status(401).json({
+  res.status(201).json({
     status: 'success',
     data: { user },
   });
