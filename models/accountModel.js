@@ -9,6 +9,14 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide an account type"],
   },
+  balance_type: {
+    type: String,
+    required: [true, "Please provide a balance type"],
+  },
+  balance: {
+    type: Number,
+    default: 0,
+  },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please provide a user id"],

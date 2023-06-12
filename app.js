@@ -15,6 +15,7 @@ app.post("/login", authController.login);
 
 app.post("/accounts", accountController.addAccount);
 app.get("/users/:id/accounts", accountController.getAllAccounts);
+app.patch("/accounts/:id", accountController.updateAccountBalance);
 
 app.post("/accounts/:id/transactions", transactionController.addTransaction);
 app.get("/users/:id/transactions", transactionController.getAllTransactions);
