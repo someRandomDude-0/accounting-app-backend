@@ -4,6 +4,7 @@ const cors = require("cors");
 const authController = require("./controllers/authController.js");
 const accountController = require("./controllers/accountController.js");
 const transactionController = require("./controllers/transactionController.js");
+const entryController = require("./controllers/entryController.js");
 
 const app = express();
 
@@ -20,12 +21,14 @@ app.patch("/accounts/:id", accountController.updateAccountBalance);
 app.post("/accounts/:id/transactions", transactionController.addTransaction);
 app.get("/users/:id/transactions", transactionController.getAllTransactions);
 
+app.post("/users/entry", entryController.addEntry);
+app.get("/users/:id/entry", entryController.getAllEntries);
 
 app.all("*", (req, res, next) => {
   res.status(404).json({
-    status: 'fail',
-    message: 'Route does not exist'
-  })
-})
+    status: "fail",
+    message: "Route does not exist",
+  });
+});
 
 module.exports = app;
