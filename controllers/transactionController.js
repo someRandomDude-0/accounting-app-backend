@@ -16,7 +16,7 @@ exports.addTransaction = catchAsync(async (req, res, next) => {
     transaction_type,
     account_id: id,
     amount,
-    user_id
+    user_id,
   });
 
   if (!transaction)
@@ -30,19 +30,21 @@ exports.addTransaction = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAllTransactions = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-exports.getAllTransactions = catchAsync(async (req,res,next) => {
-  const {id} = req.params;
+  if (id === 'null')
+    return next(new AppError('provided null for user_id', 400))
 
-  const transactions = await Transaction.find({ user_id: id})
+  const transactions = await Transaction.find({ user_id: id });
 
   if (!transactions)
-  return next(
-    new AppError("couldn't find any transaction please try again", 400)
-  );
+    return next(
+      new AppError("couldn't find any transaction please try again", 400)
+    );
 
   res.status(200).json({
     status: "success",
     data: { transactions },
   });
-})
+});

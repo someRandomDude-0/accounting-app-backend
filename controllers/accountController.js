@@ -3,7 +3,8 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.addAccount = catchAsync(async (req, res, next) => {
-  const { account_name, account_type, user_id, balance_type } = req.body;
+  const { account_name, account_type, user_id, balance_type, belongs_to } =
+    req.body;
 
   if (!account_name || !account_type || !balance_type || !user_id)
     return next(new AppError("Please provide valid data", 400));
@@ -12,6 +13,7 @@ exports.addAccount = catchAsync(async (req, res, next) => {
     account_name,
     account_type,
     balance_type,
+    belongs_to,
     user_id,
   });
 
@@ -26,6 +28,9 @@ exports.addAccount = catchAsync(async (req, res, next) => {
 
 exports.getAllAccounts = catchAsync(async (req, res, next) => {
   const user_id = req.params.id;
+
+  if (user_id === "null")
+    return next(new AppError("provided null for user_id", 400));
 
   const accounts = await Account.find({ user_id });
 
@@ -63,6 +68,8 @@ exports.updateAccountBalance = catchAsync(async (req, res, next) => {
   //   __v: 0
   // }
 
+  // console.log(account)
+
   if (account.balance_type === transaction_type.toLowerCase()) {
     account.balance += amount;
   } else {
@@ -75,9 +82,23 @@ exports.updateAccountBalance = catchAsync(async (req, res, next) => {
   // credit debit
   // credit credit
 
-  await account.save();
+  const updatedAccount = await account.save();
 
   res.status(200).json({
     status: "success",
+    data: { updatedAccount },
+  });
+});
+
+exports.zeroAccountBalance = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const account = await Account.findById(id);
+
+  account.balance = 0;
+  const zeroedAccount = await account.save();
+
+  res.status(200).json({
+    status: "success",
+    data: { zeroedAccount },
   });
 });

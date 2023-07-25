@@ -17,6 +17,10 @@ const accountSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  belongs_to: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: null
+  },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please provide a user id"],

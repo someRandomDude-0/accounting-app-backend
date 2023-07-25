@@ -1,4 +1,4 @@
-const Entry = require("../models/entryModel");
+const ClosingEntry = require("../models/closingEntryModal");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -17,7 +17,7 @@ exports.addEntry = catchAsync(async (req, res, next) => {
   )
     return next(new AppError("Please provide valid data", 400));
 
-  const entry = await Entry.create({
+  const entry = await ClosingEntry.create({
     creditAccounts,
     debitAccounts,
     date,
@@ -38,9 +38,9 @@ exports.getAllEntries = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   if (id === "null")
-    return next(new AppError('provided null for user_id', 400))
+    return next(new AppError("provided null for user_id", 400));
 
-  const entries = await Entry.find({ user_id: id });
+  const entries = await ClosingEntry.find({ user_id: id });
 
   if (!entries)
     return next(new AppError("couldn't find any Entry please try again", 400));
